@@ -30,3 +30,11 @@ body {
 .alert-message {
     margin-bottom: 20px;
 }
+
+.rounded-circle {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+}

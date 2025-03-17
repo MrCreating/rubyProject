@@ -9,6 +9,6 @@ class SettingsController < ApplicationController
     I18n.locale = new_language.to_sym
     session[:locale] = new_language
 
-    redirect_to settings_path, notice: 'Язык успешно изменен'
+    redirect_to settings_path, notice: t('saved')
   end
 end

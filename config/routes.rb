@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "grades/index"
   get "experts/index"
   get "users/index"
   get "users/show"
@@ -24,17 +25,23 @@ Rails.application.routes.draw do
 
   resources :themes, only: [:index, :show]
   resources :marks, only: [:index, :show]
+  resources :grades, only: [:index]
   resources :content, only: [:index]
   resources :settings, only: [:index, :edit, :update]
   resources :users, only: [:index, :show, :edit, :update]
   resources :experts, only: [:index]
 
   get '/user', to: 'user#index', constraints: ->(req) { req.session[:session_token].present? }
+  patch '/user', to: 'user#update'
 
   get '/api/sessions/list', to: 'sessions#list', constraints: ->(req) { req.session[:session_token].present? }
 
   get '/settings/language/:locale', to: 'application#switch_locale', as: 'switch_locale'
   post '/settings/update_language', to: 'settings#update_language', as: 'update_language_settings'
+  delete '/api/user/photo/remove', to: 'user#remove_photo'
+
+  post '/api/attachment/create', to: 'attachment#create', as: 'create_attachment'
+  get '/api/attachment/show', to: 'attachment#show', as: 'show_attachment'
 
   # default route
   get "up" => "rails/health#show", as: :rails_health_check
