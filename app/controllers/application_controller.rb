@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
   def set_locale
     if logged_in?
       user_language = Setting.get_value(user: current_user, setting_id: SettingOption.find_by(name: 'language'))
+      Rails.logger.debug user_language
       I18n.locale = user_language.presence || I18n.default_locale
     else
       I18n.locale = session[:locale] || I18n.default_locale
@@ -20,7 +21,7 @@ class ApplicationController < ActionController::Base
 
   def switch_locale
     if logged_in?
-      Setting.set_value(user: current_user, setting_id: SettingOption.find_by(name: 'language'), value: params[:locale])
+      Setting.set_value(user: current_user, setting: SettingOption.find_by(name: 'language'), value: params[:locale])
     else
       session[:locale] = params[:locale]
     end

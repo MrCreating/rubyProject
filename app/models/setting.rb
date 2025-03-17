@@ -14,8 +14,10 @@ class Setting < ApplicationRecord
     end
   end
 
-  def self.set_value(user: User, setting_id: Integer, value: String)
+  def self.set_value(user: User, setting: Setting, value: String)
     user_id = user.id
+    setting_id = setting.id
+
     setting = find_or_initialize_by(user_id: user_id, setting_id: setting_id)
     setting.value = value
     setting.save!

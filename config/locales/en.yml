@@ -26,3 +26,7 @@ en:
   profile: "Profile"
   rate: "Rate"
   experts: "Experts"
+  language: 'Language'
+  save: 'Save'
+  special_info: 'Service Information'
+  access_level: 'Access Level'

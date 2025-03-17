@@ -26,3 +26,7 @@ ru:
   profile: "Профиль"
   rate: "Оценить"
   experts: "Эксперты"
+  language: "Язык"
+  save: 'Сохранить'
+  special_info: 'Служебная информация'
+  access_level: 'Уровень доступа'

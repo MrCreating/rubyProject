@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   get '/api/sessions/list', to: 'sessions#list', constraints: ->(req) { req.session[:session_token].present? }
 
   get '/settings/language/:locale', to: 'application#switch_locale', as: 'switch_locale'
+  post '/settings/update_language', to: 'settings#update_language', as: 'update_language_settings'
 
   # default route
   get "up" => "rails/health#show", as: :rails_health_check
