@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <%= stylesheet_link_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' %>
+  <style>
+      body {
+          background-color: #f5f5f5 !important; /* Светло-серый фон для всей страницы */
+      }
+      .sidebar {
+          background-color: white;
+          height: 100vh; /* Занимает всю высоту экрана */
+          padding-top: 20px;
+          padding-left: 0;
+          border-right: 1px solid #ddd;
+      }
+      .sidebar h4 {
+          font-size: 18px;
+      }
+      .main-content {
+          border-left: 1px solid #ddd;
+      }
+      .navbar {
+          background-color: #ffffff;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          margin: 0;
+      }
+      .navbar .navbar-brand {
+          font-size: 20px;
+          font-weight: bold;
+      }
+      .navbar .nav-link {
+          font-size: 16px;
+      }
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2 sidebar">
+      <ul class="list-unstyled pl-3">
+        <% if current_user.access_level == 0 or current_user.access_level == nil %>
+          <li class="p-2"><%= link_to t('settings'), '/settings', class: 'text-dark' %></li>
+          <li class="p-2"><%= link_to t('rate'), '/rate', class: 'text-dark' %></li>
+          <li class="p-2"><%= link_to t('experts'), '/experts', class: 'text-dark' %></li>
+        <% elsif current_user.access_level == 1 %>
+          <li class="p-2"><%= link_to t('rate'), '/rate', class: 'text-dark' %></li>
+          <li class="p-2"><%= link_to t('experts'), '/experts', class: 'text-dark' %></li>
+          <hr class="my-3">
+          <li class="p-2"><%= link_to t('settings'), '/settings', class: 'text-dark' %></li>
+          <li class="p-2"><%= link_to t('grades'), '/grades', class: 'text-dark' %></li>
+          <li class="p-2"><%= link_to t('themes'), '/themes', class: 'text-dark' %></li>
+        <% elsif current_user.access_level == 2 %>
+          <li class="p-2"><%= link_to t('rate'), '/rate', class: 'text-dark' %></li>
+          <li class="p-2"><%= link_to t('experts'), '/experts', class: 'text-dark' %></li>
+          <hr class="my-3">
+          <li class="p-2"><%= link_to t('themes'), '/themes', class: 'text-dark' %></li>
+          <li class="p-2"><%= link_to t('grades'), '/grades', class: 'text-dark' %></li>
+          <li class="p-2"><%= link_to t('data'), '/content', class: 'text-dark' %></li>
+          <li class="p-2"><%= link_to t('settings'), '/settings', class: 'text-dark' %></li>
+          <li class="p-2"><%= link_to t('users'), '/users', class: 'text-dark' %></li>
+        <% end %>
+      </ul>
+    </div>
+
+    <div class="col-md-10 main-content p-0">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="navbar-nav ml-auto">
+          <%= link_to current_user.username, '/user', method: 'delete', class: 'nav-link' %>
+          <%= link_to t('logout'), '/logout', method: 'delete', class: 'nav-link' %>
+        </div>
+      </nav>
+      <div class="mt-0 p-3">
+        <%= yield %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= javascript_include_tag 'https://code.jquery.com/jquery-3.5.1.slim.min.js' %>
+<%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js' %>
+<%= javascript_include_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js' %>
+</body>
+</html>

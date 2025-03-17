@@ -1,0 +1,2 @@
+class SettingOption < ApplicationRecord
+end

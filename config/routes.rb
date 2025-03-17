@@ -1,14 +1,40 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  get "experts/index"
+  get "users/index"
+  get "users/show"
+  get "users/edit"
+  get "users/update"
+  get "settings/index"
+  get "settings/edit"
+  get "settings/update"
+  get "content/index"
+  get "marks/index"
+  get "marks/show"
+  get "themes/index"
+  get "themes/show"
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  root to: 'user#index'
+
+  get '/login', to: 'sessions#new'
+  post '/login', to: 'sessions#create'
+  get '/logout', to: 'sessions#destroy'
+
+  get '/register', to: 'user#new', as: 'register'
+  post '/register', to: 'user#create'
+
+  resources :themes, only: [:index, :show]
+  resources :marks, only: [:index, :show]
+  resources :content, only: [:index]
+  resources :settings, only: [:index, :edit, :update]
+  resources :users, only: [:index, :show, :edit, :update]
+  resources :experts, only: [:index]
+
+  get '/user', to: 'user#index', constraints: ->(req) { req.session[:session_token].present? }
+
+  get '/api/sessions/list', to: 'sessions#list', constraints: ->(req) { req.session[:session_token].present? }
+
+  get '/settings/language/:locale', to: 'application#switch_locale', as: 'switch_locale'
+
+  # default route
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end

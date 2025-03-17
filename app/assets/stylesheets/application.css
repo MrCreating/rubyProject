@@ -8,3 +8,25 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+body {
+    background-color: #f5f5f5;
+}
+
+.card {
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.btn {
+    border-radius: 5px;
+}
+
+.alert-message {
+    margin-bottom: 20px;
+}

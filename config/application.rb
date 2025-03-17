@@ -23,5 +23,13 @@ module App
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Configure session store to use Memcached
+    config.session_store :mem_cache_store,
+                         servers: ["memcached:11211"],
+                         namespace: 'my_app_sessions',
+                         key: '_my_app_session',
+                         expire_after: 1.week,
+                         compress: true
   end
 end
