@@ -29,7 +29,7 @@ class UserController < ApplicationController
 
       render json: { notice: 'Регистрация успешна', redirect_url: '/' }, status: :ok
     else
-      render json: { alert: 'Не удалось зарегистрироваться', error: 1 }, status: :unprocessable_entity
+      render json: { alert: 'Не удалось зарегистрироваться', error: 1, validation_errors: @user.errors.full_messages  }, status: :unprocessable_entity
     end
   end
 
