@@ -16,6 +16,7 @@ en:
   invalid_credentials: "Incorrect username or password"
   username_taken: "This username is already taken"
   email_taken: "This e-mail is already taken"
+  email_incorrect: "E-mail format is incorrect"
   passwords_do_not_match: "Passwords do not match"
   logout: "Logout"
   themes: "Themes"

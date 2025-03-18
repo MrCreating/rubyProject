@@ -68,12 +68,12 @@ class UserController < ApplicationController
       if attachment
         attachment.destroy
         current_user.update(photo: nil)
-        render json: { notice: 'Photo deleted successfully' }, status: :ok
+        render json: { notice: t('saved') }, status: :ok
       else
-        render json: { alert: 'Photo not found' }, status: :unprocessable_entity
+        render json: { alert: t('failed_to_save_changes') }, status: :unprocessable_entity
       end
     else
-      render json: { alert: 'No photo to delete' }, status: :unprocessable_entity
+      render json: { alert: t('failed_to_save_changes') }, status: :unprocessable_entity
     end
   end
 

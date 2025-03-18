@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
     if session[:session_token].present?
       Rails.cache.delete("session_#{session[:session_token]}")
       session.delete(:session_token)
-      redirect_to login_path, notice: 'Выход выполнен'
+      redirect_to login_path
     else
       redirect_to login_path, alert: 'Нет активных сессий у сущности'
     end

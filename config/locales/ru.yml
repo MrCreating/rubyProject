@@ -16,6 +16,7 @@ ru:
   invalid_credentials: "Неверное имя пользователя или пароль"
   username_taken: "Данное имя пользователя уже занято"
   email_taken: "Данный e-mail уже занят"
+  email_incorrect: "Формат e-mail некорректен"
   passwords_do_not_match: "Пароли не совпадают"
   logout: "Выйти"
   themes: "Темы"
