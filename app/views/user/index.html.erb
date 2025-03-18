@@ -1,158 +1,160 @@
-<div class="container mt-5">
-  <% if notice %>
-    <div class="alert alert-success" role="alert">
-      <%= notice %>
-    </div>
-  <% elsif alert %>
-    <div class="alert alert-danger" role="alert">
-      <%= alert %>
-    </div>
-  <% end %>
+<div data-controller="user">
+  <div class="container mt-5">
+    <% if notice %>
+      <div class="alert alert-success" role="alert">
+        <%= notice %>
+      </div>
+    <% elsif alert %>
+      <div class="alert alert-danger" role="alert">
+        <%= alert %>
+      </div>
+    <% end %>
 
-  <div class="row">
-    <div class="col-md-4 text-center">
-      <%= image_tag "/api/attachment/show?attachment=#{@user.photo}", class: "rounded-circle img-fluid", style: "width: 128px; height: 128px", alt: "User photo" if @user.photo && @user.photo != '' %>
-      <% if @user.photo && @user.photo != '' %>
-        <button id="delete-photo" class="btn mt-2"><%= t('delete_photo') %></button>
-        <br><br>
-      <% end %>
-      <p><b><%= t('username') %>:</b> <%= @user.username %></p>
-    </div>
-    <div class="col-md-8">
-      <%= form_with model: @user, url: "/user", method: :patch, local: true, multipart: true, id: "user-form" do |form| %>
-        <div class="form-group">
-          <%= form.label :username, t('username') %>
-          <%= form.text_field :username, class: 'form-control', required: true %>
-        </div>
-        <div class="form-group">
-          <%= form.label :photo, t('update_photo') %>
-          <%= form.file_field :photo, class: 'form-control-file', id: 'photo-input' %>
-        </div>
+    <div class="row">
+      <div class="col-md-4 text-center">
+        <%= image_tag "/api/attachment/show?attachment=#{@user.photo}", class: "rounded-circle img-fluid", style: "width: 128px; height: 128px", alt: "User photo" if @user.photo && @user.photo != '' %>
+        <% if @user.photo && @user.photo != '' %>
+          <button id="delete-photo" class="btn mt-2"><%= t('delete_photo') %></button>
+          <br><br>
+        <% end %>
+        <p><b><%= t('username') %>:</b> <%= @user.username %></p>
+      </div>
+      <div class="col-md-8">
+        <%= form_with model: @user, url: "/user", method: :patch, local: true, multipart: true, id: "user-form" do |form| %>
+          <div class="form-group">
+            <%= form.label :username, t('username') %>
+            <%= form.text_field :username, class: 'form-control', required: true %>
+          </div>
+          <div class="form-group">
+            <%= form.label :photo, t('update_photo') %>
+            <%= form.file_field :photo, class: 'form-control-file', id: 'photo-input' %>
+          </div>
 
-        <div id="upload-progress-container" style="display: none;">
-          <progress id="upload-progress" value="0" max="100"></progress>
-        </div>
+          <div id="upload-progress-container" style="display: none;">
+            <progress id="upload-progress" value="0" max="100"></progress>
+          </div>
 
-        <div id="upload-buttons" style="display: none;">
-          <button type="button" class="btn btn-primary" id="upload-button">Upload</button>
-          <button type="button" class="btn btn-secondary" id="clear-button">Clear Selection</button>
-        </div>
+          <div id="upload-buttons" style="display: none;">
+            <button type="button" class="btn btn-primary" id="upload-button">Upload</button>
+            <button type="button" class="btn btn-secondary" id="clear-button">Clear Selection</button>
+          </div>
 
-        <%= form.hidden_field :photo, id: 'photo-field' %> <!-- Hidden photo field -->
-        <%= form.hidden_field :photo_link, id: 'photo-link-field' %>
-        <div class="form-group text-right">
-          <%= form.submit t('save'), class: 'btn btn-primary' %>
-        </div>
-      <% end %>
+          <%= form.hidden_field :photo, id: 'photo-field' %> <!-- Hidden photo field -->
+          <%= form.hidden_field :photo_link, id: 'photo-link-field' %>
+          <div class="form-group text-right">
+            <%= form.submit t('save'), class: 'btn btn-primary' %>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', () => {
+          const photoInput = document.getElementById('photo-input');
+          const photoLinkField = document.getElementById('photo-link-field');
+          const photoField = document.getElementById('photo-field');
+          const uploadProgressContainer = document.getElementById('upload-progress-container');
+          const uploadProgress = document.getElementById('upload-progress');
+          const uploadButton = document.getElementById('upload-button');
+          const clearButton = document.getElementById('clear-button');
+          const uploadButtons = document.getElementById('upload-buttons');
+
+          photoInput.addEventListener('change', () => {
+              uploadButtons.style.display = 'block';
+              uploadProgressContainer.style.display = 'none';
+              uploadProgress.value = 0;
+          });
+
+          clearButton.addEventListener('click', () => {
+              photoInput.value = '';
+              uploadButtons.style.display = 'none';
+              uploadProgressContainer.style.display = 'none';
+          });
+
+          uploadButton.addEventListener('click', async () => {
+              const file = photoInput.files[0];
+              if (!file) return;
+
+              const formData = new FormData();
+              formData.append('file', file);
+
+              uploadProgressContainer.style.display = 'block';
+              uploadButtons.style.display = 'none';
+
+              try {
+                  const response = await fetch('/api/attachment/create', {
+                      method: 'POST',
+                      body: formData
+                  });
+
+                  if (!response.ok) {
+                      alert('Failed to upload the file. Please try again.');
+                      return;
+                  }
+
+                  const data = await response.json();
+
+                  const ownerId = data.owner_id;
+                  const attachmentId = data.id;
+                  const accessKey = data.access_key;
+
+                  const photoLink = `photo${ownerId}_${attachmentId}_${accessKey}`;
+                  photoLinkField.value = photoLink;
+                  photoField.value = photoLink;
+
+                  let progressValue = 0;
+                  const interval = setInterval(() => {
+                      if (progressValue < 100) {
+                          progressValue += 5;
+                          uploadProgress.value = progressValue;
+                      } else {
+                          clearInterval(interval);
+                          alert('Uploaded successfully!');
+                      }
+                  }, 30);
+              } catch (error) {
+                  console.error('Error uploading file:', error);
+                  alert('An error occurred while uploading the file.');
+              }
+          });
+
+          const xhr = new XMLHttpRequest();
+          xhr.upload.addEventListener('progress', (event) => {
+              if (event.lengthComputable) {
+                  const percent = (event.loaded / event.total) * 100;
+                  uploadProgress.value = percent;
+              }
+          });
+      });
+  </script>
+  <script>
+      document.addEventListener('DOMContentLoaded', () => {
+          const deleteButton = document.getElementById('delete-photo');
+
+          if (deleteButton) {
+              deleteButton.addEventListener('click', async () => {
+                  const confirmDelete = confirm("Are you sure you want to delete your photo?");
+
+                  if (confirmDelete) {
+                      try {
+                          const response = await fetch('/api/user/photo/remove', {
+                              method: 'DELETE'
+                          });
+
+                          if (response.ok) {
+                              alert('Photo deleted successfully');
+                              location.reload();
+                          } else {
+                              alert('Failed to delete the photo');
+                          }
+                      } catch (error) {
+                          console.error('Error deleting photo:', error);
+                          alert('An error occurred while deleting the photo');
+                      }
+                  }
+              });
+          }
+      });
+  </script>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const photoInput = document.getElementById('photo-input');
-        const photoLinkField = document.getElementById('photo-link-field');
-        const photoField = document.getElementById('photo-field');
-        const uploadProgressContainer = document.getElementById('upload-progress-container');
-        const uploadProgress = document.getElementById('upload-progress');
-        const uploadButton = document.getElementById('upload-button');
-        const clearButton = document.getElementById('clear-button');
-        const uploadButtons = document.getElementById('upload-buttons');
-
-        photoInput.addEventListener('change', () => {
-            uploadButtons.style.display = 'block';
-            uploadProgressContainer.style.display = 'none';
-            uploadProgress.value = 0;
-        });
-
-        clearButton.addEventListener('click', () => {
-            photoInput.value = '';
-            uploadButtons.style.display = 'none';
-            uploadProgressContainer.style.display = 'none';
-        });
-
-        uploadButton.addEventListener('click', async () => {
-            const file = photoInput.files[0];
-            if (!file) return;
-
-            const formData = new FormData();
-            formData.append('file', file);
-
-            uploadProgressContainer.style.display = 'block';
-            uploadButtons.style.display = 'none';
-
-            try {
-                const response = await fetch('/api/attachment/create', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (!response.ok) {
-                    alert('Failed to upload the file. Please try again.');
-                    return;
-                }
-
-                const data = await response.json();
-
-                const ownerId = data.owner_id;
-                const attachmentId = data.id;
-                const accessKey = data.access_key;
-
-                const photoLink = `photo${ownerId}_${attachmentId}_${accessKey}`;
-                photoLinkField.value = photoLink;
-                photoField.value = photoLink;
-
-                let progressValue = 0;
-                const interval = setInterval(() => {
-                    if (progressValue < 100) {
-                        progressValue += 5;
-                        uploadProgress.value = progressValue;
-                    } else {
-                        clearInterval(interval);
-                        alert('Uploaded successfully!');
-                    }
-                }, 30);
-            } catch (error) {
-                console.error('Error uploading file:', error);
-                alert('An error occurred while uploading the file.');
-            }
-        });
-
-        const xhr = new XMLHttpRequest();
-        xhr.upload.addEventListener('progress', (event) => {
-            if (event.lengthComputable) {
-                const percent = (event.loaded / event.total) * 100;
-                uploadProgress.value = percent;
-            }
-        });
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const deleteButton = document.getElementById('delete-photo');
-
-        if (deleteButton) {
-            deleteButton.addEventListener('click', async () => {
-                const confirmDelete = confirm("Are you sure you want to delete your photo?");
-
-                if (confirmDelete) {
-                    try {
-                        const response = await fetch('/api/user/photo/remove', {
-                            method: 'DELETE'
-                        });
-
-                        if (response.ok) {
-                            alert('Photo deleted successfully');
-                            location.reload();
-                        } else {
-                            alert('Failed to delete the photo');
-                        }
-                    } catch (error) {
-                        console.error('Error deleting photo:', error);
-                        alert('An error occurred while deleting the photo');
-                    }
-                }
-            });
-        }
-    });
-</script>

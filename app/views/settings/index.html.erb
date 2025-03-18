@@ -1,36 +1,38 @@
-<h1><%= t('settings') %></h1>
+<div data-controller="settings">
+  <h1><%= t('settings') %></h1>
 
-<% if notice %>
-  <div class="alert alert-success" role="alert">
-    <%= notice %>
-  </div>
-<% elsif alert %>
-  <div class="alert alert-danger" role="alert">
-    <%= alert %>
-  </div>
-<% end %>
-
-<%= form_with url: update_language_settings_path, method: :post do |form| %>
-  <div class="settings-category">
-    <h2><%= t('language') %></h2>
-    <div class="form-group row">
-      <label for="language" class="col-sm-2 col-form-label"><%= t('language') %>:</label>
-      <div class="col-sm-10">
-        <%= form.select :language, [['English', 'en'], ['Русский', 'ru']], { selected: I18n.locale }, { class: 'form-control' } %>
-      </div>
+  <% if notice %>
+    <div class="alert alert-success" role="alert">
+      <%= notice %>
     </div>
-    <%= form.submit t('save'), class: 'btn btn-primary' %>
-  </div>
-<% end %>
+  <% elsif alert %>
+    <div class="alert alert-danger" role="alert">
+      <%= alert %>
+    </div>
+  <% end %>
 
-<hr>
+  <%= form_with url: update_language_settings_path, method: :post do |form| %>
+    <div class="settings-category">
+      <h2><%= t('language') %></h2>
+      <div class="form-group row">
+        <label for="language" class="col-sm-2 col-form-label"><%= t('language') %>:</label>
+        <div class="col-sm-10">
+          <%= form.select :language, [['English', 'en'], ['Русский', 'ru']], { selected: I18n.locale }, { class: 'form-control' } %>
+        </div>
+      </div>
+      <%= form.submit t('save'), class: 'btn btn-primary' %>
+    </div>
+  <% end %>
 
-<div class="settings-category">
-  <h2><%= t('special_info') %></h2>
-  <div class="form-group row">
-    <label for="access_level" class="col-sm-2 col-form-label"><%= t('access_level') %>:</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="access_level" value="<%= current_user.access_level.nil? ? 0 : current_user.access_level %>" readonly>
+  <hr>
+
+  <div class="settings-category">
+    <h2><%= t('special_info') %></h2>
+    <div class="form-group row">
+      <label for="access_level" class="col-sm-2 col-form-label"><%= t('access_level') %>:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="access_level" value="<%= current_user.access_level.nil? ? 0 : current_user.access_level %>" readonly>
+      </div>
     </div>
   </div>
 </div>
