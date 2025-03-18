@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
 
   def require_login
     unless session[:session_token].present? && Rails.cache.read("session_#{session[:session_token]}").present?
-      redirect_to login_path, alert: 'You must be logged in to access this page'
+      redirect_to login_path
     end
   end
 

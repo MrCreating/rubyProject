@@ -1,6 +1,6 @@
-import { Controller } from "@hotwired/stimulus";
+import DefaultController from 'controllers/default_controller'
 
-export default class MarksController extends Controller {
+export default class MarksController extends DefaultController {
     connect() {
         super.connect();
     }

@@ -15,7 +15,7 @@ export default class SessionController extends Controller {
             object.handleTurboSubmitEnd(event).then(r => r).catch(err => window.location.href = '/');
         });
 
-        this.messageTarget = document.getElementById('message');
+        this.messageTargetId = 'message';
     }
 
     submitForm (event) {
@@ -42,14 +42,14 @@ export default class SessionController extends Controller {
           <button type="button" class="btn-close" data-action="click->session#dismiss" aria-label="Close"></button>
         `;
 
-        this.messageTarget.appendChild(messageDiv);
+        document.getElementById(this.messageTargetId).appendChild(messageDiv);
 
         setTimeout(() => this.dismiss(), 5000);
     }
 
     dismiss() {
-        if (this.messageTarget.children.length > 0) {
-            this.messageTarget.firstElementChild.remove();
+        if (document.getElementById('message').children.length > 0) {
+            document.getElementById('message').firstElementChild.remove();
         }
     }
 
