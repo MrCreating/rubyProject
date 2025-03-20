@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token
   before_action :set_layout, :set_locale
 
+  include UserHelper
+
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def record_not_found
@@ -32,11 +34,7 @@ class ApplicationController < ActionController::Base
   private
 
   def current_user
-    if session[:session_token].present?
-      user_id = Rails.cache.read("session_#{session[:session_token]}")
-
-      @current_user ||= User.find_by(id: user_id) if user_id
-    end
+    get_current_user
   end
 
   def logged_in?

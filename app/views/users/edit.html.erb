@@ -1,4 +1,51 @@
-<div id="main-content" data-controller="users">
-  <h1>Users#edit</h1>
-  <p>Find me in app/views/users/edit.html.erb</p>
+<div id="main-content">
+  <h1><%= t('edit') %></h1>
+
+  <%= form_with model: @user, method: :patch, local: true do |f| %>
+    <% if @user.errors.any? %>
+      <div class="alert alert-danger">
+        <ul>
+          <% @user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <% if flash[:notice].present? %>
+      <div class="alert alert-success">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+
+    <% if flash[:alert].present? %>
+      <div class="alert alert-danger">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label :username %>
+      <%= f.text_field :username, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :email %>
+      <%= f.text_field :email, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :user_rating %>
+      <%= f.number_field :user_rating, min: 0, max: 10, value: @user.user_rating.nil? ? 0 : @user.user_rating, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :access_level %>
+      <%= f.number_field :access_level, min: 0, max: 2, value: @user.access_level.nil? ? 0 : @user.access_level, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.submit t('save'), class: 'btn btn-primary' %>
+    </div>
+  <% end %>
 </div>

@@ -1,4 +1,13 @@
-<div id="main-content" data-controller="users">
-  <h1>Users#show</h1>
-  <p>Find me in app/views/users/show.html.erb</p>
+<div id="main-content">
+  <%= link_to t('back'), users_path, class: 'btn btn-secondary' %>
+  <%= link_to t('edit'), edit_user_path(@user), class: 'btn btn-warning' %>
+  <br><br>
+
+  <div>
+    <h1><%= t('user') %>: <%= @user.username %></h1>
+    <br>
+    <p><%= t('email') %>: <%= @user.email %></p>
+    <p><%= t('user_rating') %>: <%= @user.user_rating.nil? ? 0 : @user.user_rating %></p>
+    <p><%= t('access_level') %>: <%= @user.access_level.nil? ? 0 : @user.access_level %></p>
+  </div>
 </div>

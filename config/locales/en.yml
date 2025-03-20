@@ -27,15 +27,45 @@ en:
   profile: "Profile"
   rate: "Rate"
   experts: "Experts"
-  language: 'Language'
-  save: 'Save'
-  special_info: 'Service Information'
-  access_level: 'Access Level'
-  update_photo: 'Update photo'
-  photo: 'Photo'
-  saved: 'Successfully updated'
-  username_is_taken: 'Username is already taken'
-  attachment_incorrect: 'Attachment is incorrect'
-  failed_to_save_changes: 'Failed to save changes'
-  delete_photo: 'Delete photo'
-  attachment_incorrect_type: 'Attachment type is incorrect'
+  language: "Language"
+  save: "Save"
+  special_info: "Service Information"
+  access_level: "Access Level"
+  update_photo: "Update photo"
+  photo: "Photo"
+  saved: "Successfully updated"
+  username_is_taken: "Username is already taken"
+  attachment_incorrect: "Attachment is incorrect"
+  failed_to_save_changes: "Failed to save changes"
+  delete_photo: "Delete photo"
+  attachment_incorrect_type: "Attachment type is incorrect"
+  view: "View"
+  edit: "Edit"
+  delete: "Delete"
+  back: "Back"
+  user: "User"
+  users_list: "List of application users"
+  attributes:
+    username: "Username"
+    email: "E-mail"
+    password: "Password"
+    confirm_password: "Confirm password"
+    user_rating: "User rating"
+    access_level: "Access level"
+  errors:
+    cannot_change_own_access_level: 'You cannot change your own access level.'
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            username:
+              invalid: "can only contain letters, numbers, and underscores."
+              taken: "is already taken."
+            email:
+              invalid: "has invalid format."
+              taken: "is already taken."
+            access_level:
+              cannot_change_own_access_level: "cannot be changed by yourself"
+      messages:
+        invalid: "value is invalid"

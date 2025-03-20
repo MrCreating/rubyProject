@@ -28,14 +28,46 @@ ru:
   rate: "Оценить"
   experts: "Эксперты"
   language: "Язык"
-  save: 'Сохранить'
-  special_info: 'Служебная информация'
-  access_level: 'Уровень доступа'
-  update_photo: 'Обновить фото'
-  photo: 'Фото'
-  saved: 'Данные успешно обновлены'
-  username_is_taken: 'Имя пользователя уже занято'
-  attachment_incorrect: 'Вложение некорректно'
-  failed_to_save_changes: 'Не удалось сохранить изменения'
-  delete_photo: 'Удалить фото'
-  attachment_incorrect_type: 'Неподходящий тип вложения'
+  save: "Сохранить"
+  special_info: "Служебная информация"
+  access_level: "Уровень доступа"
+  update_photo: "Обновить фото"
+  photo: "Фото"
+  saved: "Данные успешно обновлены"
+  username_is_taken: "Имя пользователя уже занято"
+  attachment_incorrect: "Вложение некорректно"
+  failed_to_save_changes: "Не удалось сохранить изменения"
+  delete_photo: "Удалить фото"
+  attachment_incorrect_type: "Неподходящий тип вложения"
+  view: "Просмотр"
+  edit: "Редактировать"
+  delete: "Удалить"
+  user_rating: "Рейтинг"
+  actions: "Действия"
+  back: "Назад"
+  user: "Пользователь"
+  users_list: "Список пользователей приложения"
+  attributes:
+    username: "Имя пользователя"
+    email: "Электронная почта"
+    password: "Пароль"
+    confirm_password: "Подтверждение пароля"
+    user_rating: "Рейтинг пользователя"
+    access_level: "Уровень доступа"
+  errors:
+    cannot_change_own_access_level: 'Вы не можете изменить свой уровень доступа.'
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            username:
+              invalid: "может содержать только буквы, цифры и знак подчеркивания."
+              taken: "уже занято."
+            email:
+              invalid: "имеет некорректный формат"
+              taken: "уже занят."
+            access_level:
+              cannot_change_own_access_level: "не может быть изменен для самого себя."
+      messages:
+        invalid: "имеет некорректный формат"
