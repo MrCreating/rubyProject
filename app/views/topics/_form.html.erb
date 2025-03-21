@@ -1,11 +1,11 @@
 <div id="main-content">
-  <h1><%= t('edit') %></h1>
+  <h1><%= @topic.persisted? ? t('edit_topic') : t('new_topic') %></h1>
 
-  <%= form_with model: @user, method: :patch, local: true do |f| %>
-    <% if @user.errors.any? %>
+  <%= form_with model: @topic, local: true do |f| %>
+    <% if @topic.errors.any? %>
       <div class="alert alert-danger">
         <ul>
-          <% @user.errors.full_messages.each do |message| %>
+          <% @topic.errors.full_messages.each do |message| %>
             <li><%= message %></li>
           <% end %>
         </ul>
@@ -25,23 +25,18 @@
     <% end %>
 
     <div class="form-group">
-      <%= f.label :username %>
-      <%= f.text_field :username, class: 'form-control' %>
+      <%= f.label :title, t('title') %>
+      <%= f.text_field :title, class: 'form-control', placeholder: t('enter_title') %>
     </div>
 
     <div class="form-group">
-      <%= f.label :email %>
-      <%= f.text_field :email, class: 'form-control' %>
+      <%= f.label :description, t('description') %>
+      <%= f.text_area :description, class: 'form-control', placeholder: t('enter_description') %>
     </div>
 
     <div class="form-group">
-      <%= f.label :user_rating %>
-      <%= f.number_field :user_rating, min: 0, max: 10, value: @user.user_rating.nil? ? 0 : @user.user_rating, class: 'form-control' %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :access_level %>
-      <%= f.number_field :access_level, min: 0, max: 2, value: @user.access_level.nil? ? 0 : @user.access_level, class: 'form-control' %>
+      <%= f.label :user_id, t('user') %>
+      <%= f.collection_select :user_id, User.all, :id, :username, { prompt: t('select_user') }, class: 'form-control' %>
     </div>
 
     <div class="form-group">
@@ -49,7 +44,7 @@
       <% if request.referer.present? %>
         <%= link_to t('back'), request.referer, class: 'btn btn-secondary' %>
       <% else %>
-        <%= link_to t('back'), users_path, class: 'btn btn-secondary' %>
+        <%= link_to t('back'), topics_path, class: 'btn btn-secondary' %>
       <% end %>
     </div>
   <% end %>

@@ -16,6 +16,9 @@
 
   <%= form_with url: users_path, method: :get, local: true do |f| %>
     <div class="filters">
+      <%= f.label :id, t('id') %>
+      <%= f.text_field :id, value: params[:id], placeholder: t('id') %>
+
       <%= f.label :username, t('username') %>
       <%= f.text_field :username, value: params[:username], placeholder: t('username') %>
 
@@ -35,6 +38,7 @@
   <table class="table table-striped mt-3">
     <thead>
     <tr>
+      <th><%= t('id') %></th>
       <th><%= t('username') %></th>
       <th><%= t('email') %></th>
       <th><%= t('user_rating') %></th>
@@ -45,6 +49,7 @@
     <tbody>
     <% @users.each do |user| %>
       <tr>
+        <td><%= user.id %></td>
         <td><%= user.username %></td>
         <td><%= user.email %></td>
         <td><%= user.user_rating.nil? ? 0 : user.user_rating %></td>

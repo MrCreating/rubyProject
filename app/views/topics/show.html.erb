@@ -1,0 +1,13 @@
+<div id="main-content">
+  <%= link_to t('back'), topics_path, class: 'btn btn-secondary' %>
+  <%= link_to t('edit'), edit_topic_path(@topic), class: 'btn btn-warning' %>
+  <br><br>
+
+  <div>
+    <h1><%= t('topic') %>: <%= @topic.title %></h1>
+    <br>
+    <p><%= t('title') %>: <%= @topic.title %></p>
+    <p><%= t('description') %>: <%= @topic.description %></p>
+    <p><%= t('user') %>: <%= User.find_by(id: @topic.user_id).username %></p>
+  </div>
+</div>

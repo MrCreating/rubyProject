@@ -10,6 +10,7 @@ class UsersController < ApplicationController
     @users = User.all
     @users = @users.where("username LIKE ?", "%#{@filters[:username]}%") if @filters[:username].present?
     @users = @users.where("email LIKE ?", "%#{@filters[:email]}%") if @filters[:email].present?
+    @users = @users.where(id: @filters[:id]) if @filters[:id].present?
     @users = @users.where(access_level: @filters[:access_level]) if @filters[:access_level].present?
     @users = @users.where(user_rating: @filters[:user_rating]) if @filters[:user_rating].present?
 

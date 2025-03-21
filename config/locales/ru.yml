@@ -20,6 +20,7 @@ ru:
   passwords_do_not_match: "Пароли не совпадают"
   logout: "Выйти"
   themes: "Темы"
+  themes_list: "Созданные темы для оценки"
   grades: "Оценки"
   data: "Данные"
   settings: "Настройки"
@@ -47,9 +48,26 @@ ru:
   back: "Назад"
   user: "Пользователь"
   users_list: "Список пользователей приложения"
+  id: 'ID'
+  title: 'Название'
+  description: 'Описание'
+  no_topics_title: 'Нет тем'
+  no_topics_description: 'Никто не создавал тем для оценки, Вы можете создать тему по кнопке ниже'
+  create: 'Создать'
+  update: 'Обновить'
+  edit_topic: "Редактировать тему"
+  new_topic: "Создать тему"
+  enter_title: "Введите название"
+  enter_description: "Введите описание"
+  select_user: "Выберите пользователя"
+  created: "Объект успешно создан"
+  deleted: "Объект успешно удален"
+  topic: "Тема"
   attributes:
     username: "Имя пользователя"
     email: "Электронная почта"
+    title: "Название"
+    description: "Описание"
     password: "Пароль"
     confirm_password: "Подтверждение пароля"
     user_rating: "Рейтинг пользователя"
@@ -59,6 +77,15 @@ ru:
   activerecord:
     errors:
       models:
+        topic:
+          attributes:
+            title:
+              blank: "не может быть пустым"
+              too_long: "слишком длинное (максимум 96 символов)"
+            description:
+              too_long: "слишком длинное (максимум 4096 символов)"
+            user_id:
+              blank: "должен быть выбран"
         user:
           attributes:
             username:

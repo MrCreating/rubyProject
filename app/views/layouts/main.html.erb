@@ -62,12 +62,12 @@
           <hr class="my-3">
           <li class="p-2"><%= link_to t('settings'), '/settings', class: 'text-dark' %></li>
           <li class="p-2"><%= link_to t('grades'), '/grades', class: 'text-dark' %></li>
-          <li class="p-2"><%= link_to t('themes'), '/topic', class: 'text-dark' %></li>
+          <li class="p-2"><%= link_to t('themes'), '/topics', class: 'text-dark' %></li>
         <% elsif current_user.access_level == 2 %>
           <li class="p-2"><%= link_to t('rate'), '/marks', class: 'text-dark' %></li>
           <li class="p-2"><%= link_to t('experts'), '/experts', class: 'text-dark' %></li>
           <hr class="my-3">
-          <li class="p-2"><%= link_to t('themes'), '/topic', class: 'text-dark' %></li>
+          <li class="p-2"><%= link_to t('themes'), '/topics', class: 'text-dark' %></li>
           <li class="p-2"><%= link_to t('grades'), '/grades', class: 'text-dark' %></li>
           <li class="p-2"><%= link_to t('data'), '/content', class: 'text-dark' %></li>
           <li class="p-2"><%= link_to t('settings'), '/settings', class: 'text-dark' %></li>

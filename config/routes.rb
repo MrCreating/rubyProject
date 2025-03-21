@@ -11,8 +11,8 @@ Rails.application.routes.draw do
   get "content/index"
   get "marks/index"
   get "marks/show"
-  get "topic/index"
-  get "topic/show"
+  get "topics/index"
+  get "topics/show"
 
   root to: 'user#index'
 
@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   get '/register', to: 'user#new', as: 'register'
   post '/register', to: 'user#create'
 
-  resources :topic, only: [:index, :show]
+  resources :topics, only: [:new, :index, :show, :edit, :update, :create, :destroy]
   resources :marks, only: [:index, :show]
   resources :grades, only: [:index]
   resources :content, only: [:index]

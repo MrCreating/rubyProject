@@ -20,6 +20,7 @@ en:
   passwords_do_not_match: "Passwords do not match"
   logout: "Logout"
   themes: "Themes"
+  themes_list: "Created themes for mark"
   grades: "Grades"
   data: "Data"
   settings: "Settings"
@@ -45,10 +46,27 @@ en:
   back: "Back"
   user: "User"
   users_list: "List of application users"
+  id: 'ID'
+  title: 'Title'
+  description: 'Description'
+  no_topics_title: 'No themes'
+  no_topics_description: 'No created themes, but you can create one.'
+  create: 'Create'
+  update: 'Update'
+  edit_topic: "Edit Topic"
+  new_topic: "New Topic"
+  enter_title: "Enter the title"
+  enter_description: "Enter the description"
+  select_user: "Select a user"
+  created: "Object successfully created"
+  deleted: "Object successfully deleted"
+  topic: "Topic"
   attributes:
     username: "Username"
     email: "E-mail"
     password: "Password"
+    title: "Title"
+    description: "Description"
     confirm_password: "Confirm password"
     user_rating: "User rating"
     access_level: "Access level"
@@ -57,6 +75,15 @@ en:
   activerecord:
     errors:
       models:
+        topic:
+          attributes:
+            title:
+              blank: "can't be blank"
+              too_long: "is too long (maximum is 96 characters)"
+            description:
+              too_long: "is too long (maximum is 4096 characters)"
+            user_id:
+              blank: "must be selected"
         user:
           attributes:
             username:
