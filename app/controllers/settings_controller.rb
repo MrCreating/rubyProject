@@ -1,4 +1,6 @@
 class SettingsController < ApplicationController
+  before_action :user_access_level
+
   def index
   end
 

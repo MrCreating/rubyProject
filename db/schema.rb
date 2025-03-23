@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_21_163943) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_23_145518) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -76,6 +76,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_21_163943) do
     t.index ["user_id"], name: "index_topics_on_user_id"
   end
 
+  create_table "topics_attachments", force: :cascade do |t|
+    t.bigint "topic_id", null: false
+    t.bigint "attachment_id", null: false
+    t.index ["attachment_id"], name: "index_topics_attachments_on_attachment_id"
+    t.index ["topic_id"], name: "index_topics_attachments_on_topic_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "email"
@@ -89,14 +96,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_21_163943) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
-  create_table "vote", force: :cascade do |t|
+  create_table "votes", force: :cascade do |t|
     t.bigint "topic_id", null: false
     t.bigint "user_id", null: false
     t.integer "score", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["topic_id"], name: "index_vote_on_topic_id"
-    t.index ["user_id"], name: "index_vote_on_user_id"
+    t.index ["topic_id"], name: "index_votes_on_topic_id"
+    t.index ["user_id"], name: "index_votes_on_user_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -104,6 +111,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_21_163943) do
   add_foreign_key "attachments", "users"
   add_foreign_key "settings", "users"
   add_foreign_key "topics", "users"
-  add_foreign_key "vote", "topics"
-  add_foreign_key "vote", "users"
+  add_foreign_key "topics_attachments", "attachments"
+  add_foreign_key "topics_attachments", "topics"
+  add_foreign_key "votes", "topics"
+  add_foreign_key "votes", "users"
 end

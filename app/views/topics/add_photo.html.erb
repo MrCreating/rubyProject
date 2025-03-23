@@ -1,0 +1,129 @@
+<div id="photo-upload" data-controller="addPhoto">
+  <div>
+    <h3><%= t('add_photo') %></h3>
+    <div class="form-group">
+      <input type="file" id="multi-photo-input" multiple class="form-control-file" accept="image/*">
+    </div>
+
+    <div id="preview-container" class="row mb-3">
+    </div>
+
+    <div class="form-group">
+      <button id="upload-all-button" class="btn btn-primary" disabled><%= t('upload') %></button>
+      <button id="save-photos-button" class="btn btn-success" disabled><%= t('save') %></button>
+      <% if request.referer.present? %>
+        <%= link_to t('back'), request.referer, class: 'btn btn-secondary' %>
+      <% else %>
+        <%= link_to t('back'), topics_path, class: 'btn btn-secondary' %>
+      <% end %>
+    </div>
+
+    <div id="progress-bar-container" class="progress mt-3" style="display: none;">
+      <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+    </div>
+  </div>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', () => {
+          const photoInput = document.getElementById('multi-photo-input');
+          const previewContainer = document.getElementById('preview-container');
+          const uploadButton = document.getElementById('upload-all-button');
+          const saveButton = document.getElementById('save-photos-button');
+          const progressBar = document.getElementById('progress-bar');
+          const progressBarContainer = document.getElementById('progress-bar-container');
+          let photoFiles = [];
+          let photoLinks = [];
+
+          const createPreview = (file, index) => {
+              const reader = new FileReader();
+              const previewElement = document.createElement('div');
+              previewElement.className = 'col-md-3 position-relative mb-3';
+              previewElement.style.textAlign = 'center';
+              reader.onload = (e) => {
+                  previewElement.innerHTML = `
+            <img src="${e.target.result}" class="img-fluid rounded" style="height: 128px; width: 128px; object-fit: cover;" alt="Preview">
+            <button class="btn btn-danger btn-sm mt-2 delete-photo-button">×</button>
+          `;
+                  previewContainer.appendChild(previewElement);
+                  previewElement.querySelector('.delete-photo-button').addEventListener('click', () => {
+                      if (!uploadButton.disabled) {
+                          photoInput.value = '';
+                          photoFiles.splice(index, 1);
+                          previewContainer.removeChild(previewElement);
+                          uploadButton.disabled = photoFiles.length === 0;
+                      }
+                  });
+              };
+              reader.readAsDataURL(file);
+          };
+
+          photoInput.addEventListener('change', () => {
+              const files = Array.from(photoInput.files);
+              files.forEach((file, index) => {
+                  photoFiles.push(file);
+                  createPreview(file, photoFiles.length - 1);
+              });
+              uploadButton.disabled = photoFiles.length === 0;
+          });
+
+          uploadButton.addEventListener('click', async () => {
+              if (photoFiles.length === 0) return;
+
+              progressBarContainer.style.display = 'block';
+              progressBar.style.width = '0%';
+
+              for (let i = 0; i < photoFiles.length; i++) {
+                  const file = photoFiles[i];
+                  const formData = new FormData();
+                  formData.append('file', file);
+
+                  try {
+                      const response = await fetch('/api/attachment/create', {
+                          method: 'POST',
+                          body: formData,
+                      });
+
+                      if (!response.ok) {
+                          alert(`Failed to upload file ${i + 1}.`);
+                          continue;
+                      }
+
+                      const data = await response.json();
+                      const photoLink = `photo${data.owner_id}_${data.id}_${data.access_key}`;
+                      photoLinks.push(photoLink);
+
+                      const progress = ((i + 1) / photoFiles.length) * 100;
+                      progressBar.style.width = `${progress}%`;
+                  } catch (error) {
+                      console.error('Error uploading file:', error);
+                  }
+              }
+
+              progressBarContainer.style.display = 'none';
+              uploadButton.disabled = true;
+              saveButton.disabled = photoLinks.length === 0;
+          });
+
+          saveButton.addEventListener('click', async () => {
+              try {
+                  const response = await fetch(window.location.href, {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ photo_links: photoLinks }),
+                  });
+
+                  if (response.ok) {
+                      alert('Photos saved successfully!');
+                  } else {
+                      alert('Failed to save photos. Please try again.');
+                  }
+              } catch (error) {
+                  console.error('Error saving photos:', error);
+                  alert('An error occurred while saving photos.');
+              }
+          });
+      });
+  </script>
+</div>

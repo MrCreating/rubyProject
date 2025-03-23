@@ -1,6 +1,7 @@
 class UserController < ApplicationController
   before_action :require_login
   skip_before_action :require_login, only: [:new, :create]
+  before_action :user_access_level
 
   include SessionsHelper
 

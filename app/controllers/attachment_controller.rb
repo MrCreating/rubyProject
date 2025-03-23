@@ -1,5 +1,6 @@
 class AttachmentController < ApplicationController
   before_action :require_login
+  before_action :user_access_level
 
   def create
     file = params[:file]

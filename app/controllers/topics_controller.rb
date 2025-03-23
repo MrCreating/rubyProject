@@ -1,5 +1,6 @@
 class TopicsController < ApplicationController
-  before_action :set_topic, only: [:show, :edit, :update, :destroy]
+  before_action :set_topic, only: [:show, :edit, :update, :destroy, :add_photo, :delete_photo]
+  before_action :moderator_access_level
 
   def new
     @topic = Topic.new
@@ -15,7 +16,7 @@ class TopicsController < ApplicationController
   end
 
   def index
-    @filters = params.permit(:id, :title, :description, :user_id)
+    @filters = params.permit(:id, :title, :description, :user_id, :page)
 
     @page = (@filters[:page] || 1).to_i
     @per_page = 5
@@ -35,6 +36,31 @@ class TopicsController < ApplicationController
   end
 
   def edit
+  end
+
+  def add_photo
+    photo_links = params[:photo_links]
+
+    if photo_links.present?
+      photo_links.each do |photo_link|
+        @attachment = Attachment.find_by_photo(photo: photo_link)
+        if @attachment
+          TopicsAttachment.create(topic: @topic, attachment: @attachment)
+        else
+          render json: { error: 1 }, status: :unprocessable_entity
+        end
+      end
+
+      render json: { success: 1 }, status: :ok
+    end
+  end
+
+  def delete_photo
+    @attachment = Attachment.find(params[:attachment_id])
+
+    @topic.attachments.delete(@attachment)
+
+    redirect_to topic_path(@topic), notice: t('saved')
   end
 
   def update

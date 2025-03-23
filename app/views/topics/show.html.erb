@@ -1,6 +1,19 @@
 <div id="main-content">
+  <% if flash[:notice].present? %>
+    <div class="alert alert-success">
+      <%= flash[:notice] %>
+    </div>
+  <% end %>
+
+  <% if flash[:alert].present? %>
+    <div class="alert alert-danger">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
   <%= link_to t('back'), topics_path, class: 'btn btn-secondary' %>
   <%= link_to t('edit'), edit_topic_path(@topic), class: 'btn btn-warning' %>
+  <%= link_to t('add_photo'), add_photo_topic_path(@topic), class: 'btn btn-warning' %>
   <br><br>
 
   <div>
@@ -10,4 +23,39 @@
     <p><%= t('description') %>: <%= @topic.description %></p>
     <p><%= t('user') %>: <%= User.find_by(id: @topic.user_id).username %></p>
   </div>
+
+  <br>
+  <br>
+  <h2><%= t('attachments') %></h2>
+  <% if @topic.attachments.any? %>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th><%= t('id') %></th>
+        <th><%= t('user') %></th>
+        <th><%= t('access_key') %></th>
+        <th><%= t('upload_time') %></th>
+        <th><%= t('actions') %></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @topic.attachments.each do |attachment| %>
+        <tr>
+          <td><%= attachment.id %></td>
+          <td><%= attachment.user.username %></td>
+          <td><%= attachment.access_key %></td>
+          <td><%= attachment.created_at.strftime('%Y-%m-%d %H:%M:%S') %></td>
+          <td>
+            <div class="btn-group" role="group" aria-label="Actions">
+              <%= link_to t('view'), "/api/attachment/show?attachment=photo#{attachment.user_id}_#{attachment.id}_#{attachment.access_key}", class: 'btn btn-info btn-sm mr-1' %>
+              <%= button_to t('delete'), delete_photo_topic_path(@topic, attachment), method: :delete, class: 'btn btn-danger btn-sm' %>
+            </div>
+            </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p><%= t('no_attachments') %></p>
+  <% end %>
 </div>

@@ -31,6 +31,24 @@ class ApplicationController < ActionController::Base
     redirect_back(fallback_location: root_path)
   end
 
+  def check_access_level(access_level: Integer)
+    if current_user.access_level < access_level
+      redirect_to root_path, alert: t('not_available')
+    end
+  end
+
+  def admin_access_level
+    check_access_level(access_level: 2)
+  end
+
+  def moderator_access_level
+    check_access_level(access_level: 1)
+  end
+
+  def user_access_level
+    check_access_level(access_level: 0)
+  end
+
   private
 
   def current_user

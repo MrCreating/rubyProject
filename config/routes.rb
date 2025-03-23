@@ -23,8 +23,19 @@ Rails.application.routes.draw do
   get '/register', to: 'user#new', as: 'register'
   post '/register', to: 'user#create'
 
-  resources :topics, only: [:new, :index, :show, :edit, :update, :create, :destroy]
-  resources :marks, only: [:index, :show]
+  resources :topics, only: [:new, :index, :show, :edit, :update, :create, :destroy] do
+    member do
+      get 'add_photo'
+      post 'add_photo'
+      delete 'delete_photo/:attachment_id', to: 'topics#delete_photo', as: 'delete_photo'
+    end
+  end
+  resources :marks, only: [:index, :show] do
+    member do
+      post 'vote'
+    end
+  end
+
   resources :grades, only: [:index]
   resources :content, only: [:index]
   resources :settings, only: [:index, :edit, :update]

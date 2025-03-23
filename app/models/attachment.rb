@@ -5,6 +5,10 @@ class Attachment < ApplicationRecord
 
   has_one_attached :file
 
+  def credentials
+    "photo#{self.user.id}_#{self.id}_#{self.access_key}"
+  end
+
   def self.find_by_photo(photo: String)
     return nil if photo == ''
     return nil unless photo.is_a?(String) && !photo.empty?

@@ -1,4 +1,6 @@
 class ExpertsController < ApplicationController
+  before_action :admin_access_level
+
   def index
   end
 end

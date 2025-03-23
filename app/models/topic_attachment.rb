@@ -1,2 +1,0 @@
-class TopicAttachment < ApplicationRecord
-end

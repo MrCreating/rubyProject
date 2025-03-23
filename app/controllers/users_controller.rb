@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update]
+  before_action :admin_access_level
 
   def index
     @filters = params.permit(:id, :username, :email, :access_level, :user_rating, :page)
