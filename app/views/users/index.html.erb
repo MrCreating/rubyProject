@@ -50,7 +50,11 @@
     <% @users.each do |user| %>
       <tr>
         <td><%= user.id %></td>
-        <td><%= user.username %></td>
+        <td>
+          <a href="/user/<%= user.id %>">
+            <%= user.username %>
+          </a>
+        </td>
         <td><%= user.email %></td>
         <td><%= user.user_rating.nil? ? 0 : user.user_rating %></td>
         <td><%= user.access_level.nil? ? 0 : user.access_level %></td>

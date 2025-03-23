@@ -38,6 +38,21 @@ class UserController < ApplicationController
     @user = current_user
   end
 
+  def show
+    @filters = params.permit(:id, :page)
+
+    @page = (@filters[:page] || 1).to_i
+    @per_page = 5
+
+    @user = User.find_by(id: @filters[:id])
+    @votes = Vote.all.includes(:user).includes(:topic)
+    @votes = @votes.where(user: @user)
+
+    @total  = @votes.count
+    @votes = @votes.offset((@page - 1) * @per_page).limit(@per_page)
+    @votes = @votes.order(created_at: :desc)
+  end
+
   def update
     user_params = params.require(:user).permit(:username, :photo)
 

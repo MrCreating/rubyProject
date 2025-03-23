@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   resources :experts, only: [:index]
 
   get '/user', to: 'user#index', constraints: ->(req) { req.session[:session_token].present? }
+  get '/user/:id', to: 'user#show', constraints: ->(req) { req.session[:session_token].present? }
   patch '/user', to: 'user#update'
 
   get '/api/sessions/list', to: 'sessions#list', constraints: ->(req) { req.session[:session_token].present? }

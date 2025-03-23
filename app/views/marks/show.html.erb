@@ -71,7 +71,11 @@
             <img src="/api/attachment/show?attachment=<%= vote.user.photo %>" alt="<%= vote.user.username %>" class="img-fluid rounded-circle" style="width: 28px; height: 28px">
           <% end %>
         </td>
-        <td><%= vote.user.username %></td>
+        <td>
+          <a href="/user/<%= vote.user.id %>">
+            <%= vote.user.username %>
+          </a>
+        </td>
         <td><%= vote.score %>/10</td>
         <td><%= 0 %></td>
         <td><%= 0 %></td>
