@@ -1,4 +1,5 @@
 class TopicsController < ApplicationController
+  before_action :require_login
   before_action :set_topic, only: [:show, :edit, :update, :destroy, :add_photo, :delete_photo]
   before_action :moderator_access_level
 
@@ -72,7 +73,10 @@ class TopicsController < ApplicationController
   end
 
   def destroy
-    @topic.destroy
+    unless @topic == nil
+      @topic.destroy
+    end
+
     redirect_to topics_path, notice: t('deleted')
   end
 

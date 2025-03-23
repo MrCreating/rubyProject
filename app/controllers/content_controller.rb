@@ -1,4 +1,5 @@
 class ContentController < ApplicationController
+  before_action :require_login
   before_action :admin_access_level
 
   def index
@@ -15,5 +16,15 @@ class ContentController < ApplicationController
     @total = @attachments.count
     @attachments = @attachments.offset((@page - 1) * @per_page).limit(@per_page)
     @topic = @attachments.order(created_at: :desc)
+  end
+
+  def destroy
+    @attachment = Attachment.find_by(id: params[:id])
+
+    unless @attachment == nil
+      @attachment.destroy
+    end
+
+    redirect_to content_index_path, notice: t('deleted')
   end
 end

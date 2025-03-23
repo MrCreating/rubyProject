@@ -37,9 +37,9 @@ Rails.application.routes.draw do
   end
 
   resources :grades, only: [:index]
-  resources :content, only: [:index]
+  resources :content, only: [:index, :destroy]
   resources :settings, only: [:index, :edit, :update]
-  resources :users, only: [:index, :show, :edit, :update]
+  resources :users, only: [:index, :show, :edit, :update, :destroy]
   resources :experts, only: [:index]
 
   get '/user', to: 'user#index', constraints: ->(req) { req.session[:session_token].present? }

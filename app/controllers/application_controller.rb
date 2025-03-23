@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_access_level(access_level: Integer)
-    if current_user.access_level < access_level
+    if current_user && current_user.access_level < access_level
       redirect_to root_path, alert: t('not_available')
     end
   end
@@ -56,11 +56,14 @@ class ApplicationController < ActionController::Base
   end
 
   def logged_in?
-    current_user.present?
+    current_user&.present?
   end
 
   def require_login
-    unless session[:session_token].present? && Rails.cache.read("session_#{session[:session_token]}").present?
+    unless session[:session_token].present? && Rails.cache.read("session_#{session[:session_token]}").present? && logged_in?
+      if Rails.cache.read("session_#{session[:session_token]}").present?
+        session[:session_token] = nil
+      end
       redirect_to login_path
     end
   end

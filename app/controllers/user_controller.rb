@@ -45,6 +45,8 @@ class UserController < ApplicationController
     @per_page = 5
 
     @user = User.find_by(id: @filters[:id])
+    raise ActiveRecord::RecordNotFound unless @user
+
     @votes = Vote.all.includes(:user).includes(:topic)
     @votes = @votes.where(user: @user)
 

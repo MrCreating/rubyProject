@@ -1,4 +1,5 @@
 class GradesController < ApplicationController
+  before_action :require_login
   before_action :moderator_access_level
 
   def index

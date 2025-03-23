@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_secure_password
 
+  has_many :setting, dependent: :destroy
+
   include UserHelper
 
   validates :username,
@@ -23,4 +25,10 @@ class User < ApplicationRecord
             numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10 }
 
   before_save { self.email = email.downcase }
+
+  after_initialize :set_default_user_rating, if: :new_record?
+
+  def set_default_user_rating
+    self.user_rating ||= 0
+  end
 end

@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update]
+  before_action :require_login
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :admin_access_level
 
   def index
@@ -26,6 +27,14 @@ class UsersController < ApplicationController
   def edit
   end
 
+  def destroy
+    unless @user == nil
+      @user.destroy
+    end
+
+    redirect_to users_path, notice: t('deleted')
+  end
+
   def update
     @params = params.require(:user).permit(:id, :username, :email, :access_level, :user_rating, :page)
 
@@ -42,6 +51,6 @@ class UsersController < ApplicationController
 
   private
   def set_user
-    @user = User.find(params[:id])
+    @user = User.find_by(id: params[:id])
   end
 end

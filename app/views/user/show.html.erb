@@ -1,7 +1,7 @@
 <div id="main-content" data-controller="user">
   <div class="container mt-5">
     <div class="profile-header d-flex align-items-center mb-4">
-      <% if @user.photo.present? && @user.photo != '' %>
+      <% if @user.photo.present? && @user.photo != '' and Attachment.find_by_photo(photo: @user.photo) %>
         <img src="/api/attachment/show?attachment=<%= @user.photo %>" alt="<%= @user.username %>" class="img-fluid rounded-circle" style="width: 96px; height: 96px;">
       <% else %>
         <div></div>

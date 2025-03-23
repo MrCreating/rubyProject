@@ -12,8 +12,8 @@
 
     <div class="row">
       <div class="col-md-4 text-center">
-        <%= image_tag "/api/attachment/show?attachment=#{@user.photo}", class: "rounded-circle img-fluid", style: "width: 128px; height: 128px", alt: "User photo" if @user.photo && @user.photo != '' %>
-        <% if @user.photo && @user.photo != '' %>
+        <%= image_tag "/api/attachment/show?attachment=#{@user.photo}", class: "rounded-circle img-fluid", style: "width: 128px; height: 128px", alt: "User photo" if @user.photo && @user.photo != '' and Attachment.find_by_photo(photo: @user.photo)  %>
+        <% if @user.photo && @user.photo != '' and Attachment.find_by_photo(photo: @user.photo) %>
           <button id="delete-photo" class="btn mt-2"><%= t('delete_photo') %></button>
           <br><br>
         <% end %>

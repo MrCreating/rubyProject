@@ -5,6 +5,9 @@ class Attachment < ApplicationRecord
 
   has_one_attached :file
 
+  has_many :topics_attachments, dependent: :destroy
+  has_many :topics, through: :topics_attachments
+
   def credentials
     "photo#{self.user.id}_#{self.id}_#{self.access_key}"
   end
