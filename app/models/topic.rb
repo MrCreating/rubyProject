@@ -4,7 +4,7 @@ class Topic < ApplicationRecord
   validates :user_id, presence: true
 
   has_many :topics_attachments
-  has_many :attachments, through: :topics_attachments
+  has_many :attachments, through: :topics_attachments, dependent: :destroy
 
   has_many :votes, dependent: :destroy
 
