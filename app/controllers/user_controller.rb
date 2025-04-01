@@ -22,15 +22,15 @@ class UserController < ApplicationController
       render json: { alert: 'Это имя пользователя уже занято', error: 1 }, status: :unprocessable_entity and return
     end
 
-    @user = User.new(user_params)
+    @user = User.new
 
-    if @user.save
+    if @user.update(user_params)
       session_token = create_session(user: @user)
       session[:session_token] = session_token
 
-      render json: { notice: 'Регистрация успешна', redirect_url: '/' }, status: :ok
+      render json: { notice: t('saved'), redirect_url: '/' }, status: :ok
     else
-      render json: { alert: 'Не удалось зарегистрироваться', error: 1, validation_errors: @user.errors.full_messages  }, status: :unprocessable_entity
+      render json: { alert: t('failed_to_save_changes'), error: 1, validation_errors: @user.errors.full_messages  }, status: :unprocessable_entity
     end
   end
 

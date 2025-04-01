@@ -8,7 +8,7 @@ WORKDIR /rails
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
       curl libjemalloc2 libvips postgresql-client \
-      libyaml-dev pkg-config build-essential git libpq-dev && \
+      libyaml-dev pkg-config build-essential git libpq-dev cmake protobuf-compiler && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set environment variables

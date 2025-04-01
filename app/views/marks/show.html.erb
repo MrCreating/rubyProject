@@ -11,13 +11,16 @@
     </div>
   <% end %>
 
+  <%= link_to t('back'), marks_path, class: 'btn btn-secondary' %>
+  <br><br>
+
   <h1><%= @topic.title %></h1>
   <p><%= @topic.description %></p>
 
   <div class="gallery">
-    <div id="main-image" class="position-relative">
+    <div id="main-image" class="position-relative" style="text-align: center">
       <% if @topic.attachments.any? %>
-        <img src="/api/attachment/show?attachment=<%= @topic.attachments.first.credentials %>" alt="<%= @topic.title %>" class="img-fluid" id="main-image-display" style="max-height: 400px; object-fit: contain;">
+        <img src="/api/attachment/show?attachment=<%= @topic.attachments.first.credentials %>" alt="<%= @topic.title %>" class="img-fluid" id="main-image-display" style="max-height: 600px; min-height: 400px; object-fit: contain;">
         <button id="prev-button" class="position-absolute" style="left: 10px;">←</button>
         <button id="next-button" class="position-absolute" style="right: 10px;">→</button>
       <% else %>
@@ -25,32 +28,36 @@
       <% end %>
     </div>
 
-    <div class="small-images mt-3">
+    <div class="small-images mt-3" style="text-align: center">
       <% @topic.attachments.each do |image| %>
         <img src="/api/attachment/show?attachment=<%= image.credentials %>" alt="<%= @topic.title %>" class="img-thumbnail small-image" style="max-height: 128px;" onclick='changeMainImage("/api/attachment/show?attachment=<%= image.credentials %>")'>
       <% end %>
     </div>
   </div>
 
-  <%= form_with model: Vote.new, url: "/marks/#{@topic.id}/vote", method: :post, local: true do |f| %>
-    <div class="form-group">
-      <%= f.label :score, t('mark_topic') %>
-      <div class="radio-group">
-        <% (1..10).each do |score| %>
-          <%= f.radio_button :score, score, id: "score_#{score}", checked: @vote && @vote.score == score %>
-          <%= f.label :score, score, value: score %>
-        <% end %>
+  <br>
+
+  <div style="align-items: center">
+    <%= form_with model: Vote.new, url: "/marks/#{@topic.id}/vote", method: :post, local: true do |f| %>
+      <div class="form-group">
+        <%= f.label :score, t('mark_topic') %>
+        <div class="radio-group">
+          <% (1..10).each do |score| %>
+            <%= f.radio_button :score, score, id: "score_#{score}", checked: @vote && @vote.score == score %>
+            <%= f.label :score, score, value: score %>
+          <% end %>
+        </div>
       </div>
-    </div>
 
-    <%= f.submit t('mark'), class: 'btn btn-primary' %>
-  <% end %>
+      <%= f.submit t('mark'), class: 'btn btn-primary' %>
+    <% end %>
 
-  <% if (@vote = @topic.votes.find_by(user: current_user)) %>
-    <p><strong><%= t('your_score') %>:</strong> <b><%= @vote.score %>/10</b></p>
-  <% end %>
+    <% if (@vote = @topic.votes.find_by(user: current_user)) %>
+      <p><strong><%= t('your_score') %>:</strong> <b><%= @vote.score %>/10</b></p>
+    <% end %>
+    <p><strong><%= t('average_score') %>:</strong> <b><%= @average_score.round(2) %>/10</b></p>
 
-  <p><strong><%= t('average_score') %>:</strong> <b><%= @average_score.round(2) %>/10</b></p>
+  </div>
 
   <h3><%= t('voters') %></h3>
   <table class="table">

@@ -26,9 +26,10 @@ class User < ApplicationRecord
 
   before_save { self.email = email.downcase }
 
-  after_initialize :set_default_user_rating, if: :new_record?
+  after_initialize :set_defaults, if: :new_record?
 
-  def set_default_user_rating
+  def set_defaults
     self.user_rating ||= 0
+    self.access_level ||= 0
   end
 end
